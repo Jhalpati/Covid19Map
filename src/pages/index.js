@@ -31,6 +31,7 @@ const IndexPage = () => {
       response = await axios.get("https://disease.sh/v3/covid-19/countries");
     } catch (e) {
       console.log("E", e);
+ 
       return;
     }
 
@@ -43,15 +44,20 @@ const IndexPage = () => {
       features: data.map((country = {}) => {
         const { countryInfo = {} } = country;
         const { lat, long: lng } = countryInfo;
+
         return {
           type: "Feature",
           properties: {
             ...country,
+
+          
           },
           geometry: {
             type: "Point",
             coordinates: [lng, lat],
+            
           },
+          
         };
       }),
     };
@@ -60,8 +66,9 @@ const IndexPage = () => {
       const { properties = {} } = feature;
       let updatedFormatted;
       let casesString;
+      
 
-      const { country, updated, cases, deaths, recovered } = properties;
+      const { country, updated, cases, deaths, recovered, tests } = properties;
 
       casesString = `${cases}`;
 
@@ -81,6 +88,7 @@ const IndexPage = () => {
           <li><strong>Confirmed:</strong> ${cases}</li>
           <li><strong>Deaths:</strong> ${deaths}</li>
           <li><strong>Recovered:</strong> ${recovered}</li>
+          <li><strong>Tests:</strong> ${tests}</li>
           <li><strong>Last update:</strong> ${updatedFormatted}</li>
         </ul>
       </span>
